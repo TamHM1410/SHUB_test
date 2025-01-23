@@ -56,7 +56,7 @@ export default function TaskOneView() {
   ];
 
 
-  if(isLoading) return <div> Is loading file ...</div>
+  if(isLoading) return <div  className="py-40"> Is loading file ...</div>
   return (
     <div className="py-20">
       <div>List product sales greater than 50.000</div>
