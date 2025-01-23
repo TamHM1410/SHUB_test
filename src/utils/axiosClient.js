@@ -1,14 +1,12 @@
 import axios from "axios";
 
 const axiosClient = axios.create({
-  baseURL: '',
+  baseURL: "https://share.shub.edu.vn/api/intern-test",
   timeout: 8000,
 });
 
 axiosClient.interceptors.request.use(async (request) => {
-  if (session) {
-    request.headers.Authorization = `Bearer `;
-  }
+  request.headers.Authorization = `Bearer `;
   return request;
 });
 
@@ -21,8 +19,7 @@ const handleResponse = (res) => {
 };
 
 const handleError = (error) => {
-  const { data } = error.response;
-  return data;
+  return error;
 };
 
 axiosClient.interceptors.response.use(
