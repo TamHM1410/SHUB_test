@@ -81,7 +81,27 @@ export default function Task3View() {
           </div>
           <div>
             <Label htmlFor="email">Input</Label>
-            <Input type="email" id="email" placeholder="Input" />
+            <Input
+              type="email"
+              id="email"
+              placeholder="Input"
+              value={`Array from ${data.number[0] || ` 0`} to ${
+                data[data.number.length - 1] || `0`
+              }`}
+              readOnly
+            />
+          </div>
+          <div>
+            <Label htmlFor="email">Range</Label>
+            <Input
+              type="email"
+              id="email"
+              placeholder="Input"
+              value={`Array from ${data.query.range[0] || ` 0`} to ${
+                data[data.query.range.length - 1] || `0`
+              }`}
+              readOnly
+            />
           </div>
           <div>
             <Label htmlFor="email">Type</Label>
