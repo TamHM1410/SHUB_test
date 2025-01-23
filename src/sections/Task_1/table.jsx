@@ -12,25 +12,28 @@ import {
   TableHead,
   TableBody,
   TableCell,
-} from "@/components/ui/table"; // ShadCN Table components
-
+} from "@/components/ui/table";
 
 export default function TableDemo({ data, columns }) {
-
   const [sorting, setSorting] = useState([]);
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 5,
+    pageSize: 10,
   });
 
+  const startRow = pagination.pageIndex * pagination.pageSize;
+  const endRow = startRow + pagination.pageSize;
+  const paginatedData = data.slice(startRow, endRow); // Cắt dữ liệu phân trang
+
   const table = useReactTable({
-    data,
+    data: paginatedData, // Dữ liệu phân trang
     columns,
     state: { sorting, pagination },
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    manualPagination: true, // Phân trang thủ công
     pageCount: Math.ceil(data.length / pagination.pageSize),
   });
 
@@ -70,7 +73,6 @@ export default function TableDemo({ data, columns }) {
         </TableBody>
       </Table>
 
-      {/* Pagination Controls */}
       <div className="flex justify-between items-center mt-4">
         <button
           className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"

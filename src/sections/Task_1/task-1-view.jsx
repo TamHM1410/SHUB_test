@@ -9,14 +9,24 @@ export default function TaskOneView() {
     queryKey: ["excel"],
     queryFn: async () => {
       const res = await get_data_excel();
-      console.log(res, "res");
       const file = new Uint8Array(res.data);
       const workbook = XLSX.read(file, { type: "array" });
       const sheetName = workbook.SheetNames[0];
       const sheet = workbook.Sheets[sheetName];
       const jsonData = XLSX.utils.sheet_to_json(sheet);
+  
 
-      return jsonData;
+      const normalizedData = jsonData.map((item) => {
+        const normalizedItem = {};
+        Object.keys(item).forEach((key) => {
+          const trimmedKey = key.trim(); // Loại bỏ khoảng trắng
+          normalizedItem[trimmedKey] = item[key];
+        });
+        return normalizedItem;
+      });
+      const mappedArr = normalizedData.filter((item) => item?.Sales >50000);
+
+      return mappedArr;
     },
   });
 
@@ -35,7 +45,8 @@ export default function TaskOneView() {
     },
     {
       accessorKey: "Sales",
-      header: "Sales",
+      header: "Sales ",
+     
     },
   ];
   return (
