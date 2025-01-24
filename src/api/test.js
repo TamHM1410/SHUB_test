@@ -2,20 +2,28 @@ import axiosClient from "@/utils/axiosClient";
 import axios from "axios";
 export const get_data_excel = async () => {
   try {
-    const corsProxy = "https://cors-anywhere.onrender.com/";
-    const url = "https://go.microsoft.com/fwlink/?LinkID=521962";
+    const proxies = [
+      'https://cors-anywhere.onrender.com/',
+      'https://cors.bridged.cc/',
+      'https://cors-proxy.htmldriven.com/'
+    ];
 
-    const response = await axios.get(corsProxy + url, {
-      responseType: "arraybuffer",
-      headers: {
-        'Accept': 'application/octet-stream',
-        'User-Agent': 'Mozilla/5.0'
-      },
-    });
+    for (const corsProxy of proxies) {
+      try {
+        const response = await axios.get(corsProxy + url, {
+          responseType: "arraybuffer",
+          timeout: 5000 // 5 second timeout
+        });
+        return response;
+      } catch (proxyError) {
+        console.warn(`Proxy ${corsProxy} failed`);
+        continue;
+      }
+    }
 
-    return response;
+    throw new Error('All proxies failed');
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Final download error:", error);
     throw error;
   }
 };
